@@ -9,28 +9,19 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.ReadProperties.File.ReadProperties;
+
 public class DriverInitialization {
 	
 	static WebDriver driver=null;
 	
 	public static WebDriver initializeDriver(){
 		
-		FileInputStream in;
-		Properties prop=null;
-		try {
-			in = new FileInputStream("config.properties");
-		    prop=new Properties();
-			
-			prop.load(in);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-		System.setProperty(prop.getProperty("driver"), prop.getProperty("driverpath"));
+				
+		System.setProperty(ReadProperties.read().getProperty("driver"), ReadProperties.read().getProperty("driverpath"));
 		
 		driver=new ChromeDriver();
-		driver.get(prop.getProperty("url"));
+		driver.get(ReadProperties.read().getProperty("url"));
 		
 		driver.manage().window().maximize();
 		

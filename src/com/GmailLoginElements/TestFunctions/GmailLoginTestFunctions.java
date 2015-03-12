@@ -1,14 +1,22 @@
 package com.GmailLoginElements.TestFunctions;
 
-import org.openqa.selenium.By;
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import com.ObjectRepository.GmailLoginObjects.GmailObjects;
+import com.ReadProperties.File.ReadProperties;
 
 public class GmailLoginTestFunctions {
 	
 			
-	WebDriver driver=null;
+	static WebDriver driver=null;
+	
+	static int i=0;
 	
 	GmailObjects object = new GmailObjects(driver);
 	
@@ -18,6 +26,8 @@ public class GmailLoginTestFunctions {
 		this.driver=driver;
 	}
 	
+	
+	// Test Functions
 	public void enterLoginDetails(String email,String password){
 		
 		object.emailTextBox(driver).sendKeys(email);
@@ -61,6 +71,23 @@ public class GmailLoginTestFunctions {
 	public Boolean createAccountLink(){
 		
 		return object.createAccountLink(driver).isDisplayed();
+	
+	}
+	
+	public static void pagescreenshot(){
+		
+		File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		
+		String name="Gmail_Login"+i;
+		
+		
+		try {
+			FileUtils.copyFile(screenshot, new File(ReadProperties.read().getProperty("screenshot_path")+"\\"+name+".jpeg"));
+			i++;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
 	}
 

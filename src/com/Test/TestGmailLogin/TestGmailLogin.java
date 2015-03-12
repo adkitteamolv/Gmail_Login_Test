@@ -2,6 +2,7 @@ package com.Test.TestGmailLogin;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -18,6 +19,7 @@ public class TestGmailLogin {
 	  public void initDriver()
 	  {
 		
+		  System.out.println("Executing initDriver....... ");
 		  driver=DriverInitialization.initializeDriver();
 		  gmailObject=new GmailLoginTestFunctions(driver);
 	  }
@@ -25,9 +27,9 @@ public class TestGmailLogin {
 	  @BeforeMethod
 	  public void clearTextBox(){
 		  
+		  System.out.println("Executing clearTextBox....... ");
 		  gmailObject.clearAll();
 		  
-		  System.out.println("Before Method");
 	  }
 	  
 	  
@@ -35,10 +37,18 @@ public class TestGmailLogin {
 	  
 	  public void testLandingPage(){
 		  
+		  System.out.println("Verifying Landing page.......");
+		  
 		  Boolean gmailsigninButton = gmailObject.signInButton();
 		  Boolean gmailcreateAccount= gmailObject.createAccountLink();
 		  
-		  if(gmailsigninButton.equals(true) && gmailcreateAccount.equals(true)){
+		  String pageTitle=gmailObject.getPageTitle();
+		  
+		  if(pageTitle.equals("Gmail")){
+			  
+			  System.out.println("Gmail Page Opened :" +pageTitle);
+		  
+		  }else if(gmailsigninButton.equals(true) && gmailcreateAccount.equals(true)){
 			  
 			  System.out.println("SignIn Button Present" + gmailsigninButton);
 			  
@@ -58,6 +68,8 @@ public class TestGmailLogin {
 	@Test(priority=1)
 	  public void enterNullInputs() 
 	  {
+		
+		 System.out.println("Executing enterNullInputs.......");
 		   
 		   gmailObject.enterLoginDetails("", "");
 		  
@@ -65,13 +77,15 @@ public class TestGmailLogin {
 		   
 		   String ActualerrorMessage= gmailObject.getEmailErrorMessage();
 		   
-		   Assert.assertEquals(ActualerrorMessage, "Enter your email address");
+		   Assert.assertEquals(ActualerrorMessage, "Enter your email address.");
 		  	   
 		}
 	  
 	    @Test(priority=2)
 	    public void enterUserNameOnly()
 	    {
+	    	System.out.println("Executing enterUserNameOnly.......");
+	    	
 	    	   gmailObject.enterLoginDetails("adkitteamolv", "");
 			  
 			   gmailObject.clickonSignInButton();
@@ -85,6 +99,8 @@ public class TestGmailLogin {
 	    @Test(priority=3)
 	    public void enterPasswordOnly()
 	    {
+	    	System.out.println("Executing enterPasswordOnly.......");
+	    	
 	    	   gmailObject.enterLoginDetails("", "9960277546");
 			  
 			   gmailObject.clickonSignInButton();
@@ -98,6 +114,9 @@ public class TestGmailLogin {
 	    @Test(priority=4)
 	    public void enterIncorrectUserNamePassword()
 	    {
+	    	
+	    	System.out.println("Executing enterIncorrectUserNamePassword.......");
+	    	
 	    	   gmailObject.enterLoginDetails("abcd", "abcd");
 			  
 			   gmailObject.clickonSignInButton();
@@ -111,6 +130,8 @@ public class TestGmailLogin {
 	    @Test(priority=5)
 	    public void enterCorrectUserNamePassword()
 	    {
+	    	System.out.println("Executing enterCorrectUserNamePassword.......");
+	    	
 	    	   gmailObject.enterLoginDetails("adkitteamolv", "9960277546");
 			  
 			   gmailObject.clickonSignInButton();
@@ -120,7 +141,14 @@ public class TestGmailLogin {
 			   System.out.println(ActualerrorMessage);
 			   
 			   Assert.assertEquals(ActualerrorMessage, "Gmail");
-		  
+		 
+	    }
+	    
+	    @AfterMethod
+	    public void takeScreenshot(){
+	    	
+	    	GmailLoginTestFunctions.pagescreenshot();
+	    	System.out.println("Screenshot taken");
 	    }
 	    
 	 
